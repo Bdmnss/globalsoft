@@ -45,7 +45,7 @@ export default function Login() {
     <div
       className={twMerge(
         twJoin(
-          'flex size-full min-h-screen items-center justify-center pt-20',
+          'flex size-full min-h-screen items-center justify-center pt-20 transition-colors duration-500',
           theme === 'dark' ? 'bg-dark text-white' : 'bg-white text-black'
         )
       )}

@@ -49,7 +49,7 @@ export default function Register() {
     <div
       className={twMerge(
         twJoin(
-          'flex size-full min-h-screen items-center justify-center pt-44',
+          'flex size-full min-h-screen items-center justify-center pt-44 transition-colors duration-500',
           theme === 'dark' ? 'bg-dark text-white' : 'bg-white text-black'
         )
       )}
