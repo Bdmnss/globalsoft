@@ -12,8 +12,12 @@ module.exports = {
     extend: {
       colors: {
         orange: '#d87d4a',
+        light: '#f1f1f1',
+        dark: '#101010',
+        orangeLight: '#fbaf85',
       },
     },
   },
+  darkMode: 'class',
   plugins: [],
 }

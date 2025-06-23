@@ -1,13 +1,14 @@
 'use client'
 
-import { FaShoppingCart, FaUser } from 'react-icons/fa'
+import { FaShoppingCart } from 'react-icons/fa'
 import Link from 'next/link'
 import ThemeToggleButton from '@/components/ThemeToggleButton'
+import UserDropdown from './UserDropdown'
 
 export default function Header() {
   return (
     <header className="relative flex justify-center">
-      <div className="fixed z-20 flex w-[100%] items-center justify-between border-b-[1px] border-b-[gray] bg-[#101010] p-10 md:gap-[4.2rem]">
+      <div className="bg-dark border-b-light fixed z-20 flex w-full items-center justify-between border-b-[1px] p-10">
         <Link
           href="/"
           className="hover:text-orange text-3xl font-bold text-white"
@@ -16,17 +17,14 @@ export default function Header() {
         </Link>
 
         <div className="flex items-center gap-4">
-          <div className="relative cursor-pointer lg:relative">
+          <div className="relative cursor-pointer">
             <FaShoppingCart
               size={20}
               className="hover:text-orange text-white"
             />
           </div>
           <ThemeToggleButton />
-          <FaUser
-            size={20}
-            className="hover:text-orange cursor-pointer text-white"
-          />
+          <UserDropdown />
         </div>
       </div>
     </header>
