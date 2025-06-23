@@ -1,9 +1,5 @@
-import React from 'react'
+import ProductsClient from './client'
 
-const page = () => {
-  return (
-    <div className="bg-light dark:bg-dark h-screen transition-colors duration-500"></div>
-  )
+export default function ProductsPage() {
+  return <ProductsClient />
 }
-
-export default page

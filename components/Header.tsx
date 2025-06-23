@@ -7,7 +7,7 @@ import UserDropdown from './UserDropdown'
 
 export default function Header() {
   return (
-    <header className="relative flex justify-center">
+    <header className="relative flex justify-center pb-28">
       <div className="bg-dark border-b-light fixed z-20 flex w-full items-center justify-between border-b-[1px] px-5 py-10 sm:px-10">
         <Link
           href="/"
