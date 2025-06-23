@@ -1,11 +1,12 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
 import CategoryDropdown from '@/components/CategoryDropdown'
 import SearchInput from '@/components/SearchInput'
-import SortButton from '@/components/SortButton'
 import ProductsGrid from '@/components/ProductsGrid'
 import Pagination from '@/components/Pagination'
+import SortDropdown from '@/components/SortDropdown'
 
 const products = [
   {
@@ -88,18 +89,36 @@ const categories = [
 ]
 
 export default function ProductsClient() {
-  const [selectedCategory, setSelectedCategory] = useState('All')
+  const router = useRouter()
+  const searchParams = useSearchParams()
+
+  const initialCategory = searchParams.get('category') || 'All'
+  const initialSearch = searchParams.get('search') || ''
+
+  const [selectedCategories, setSelectedCategories] = useState<string[]>(
+    initialCategory === 'All' ? ['All'] : [initialCategory]
+  )
   const [categoryOpen, setCategoryOpen] = useState(false)
-  const [search, setSearch] = useState('')
+  const [search, setSearch] = useState(initialSearch)
   const [sortOrder, setSortOrder] = useState<'default' | 'asc' | 'desc'>(
     'default'
   )
   const [sortOpen, setSortOpen] = useState(false)
 
+  useEffect(() => {
+    const params = new URLSearchParams()
+    if (selectedCategories.length > 0 && !selectedCategories.includes('All'))
+      params.set('category', selectedCategories.join(','))
+    if (search) params.set('search', search)
+    router.replace(`/products?${params.toString()}`, { scroll: false })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedCategories, search])
+
   let filteredProducts = products.filter(
     (p) =>
-      (selectedCategory === 'All' || p.category === selectedCategory) &&
-      p.name.toLowerCase().includes(search.toLowerCase())
+      selectedCategories.length === 0 ||
+      selectedCategories.includes('All') ||
+      selectedCategories.includes(p.category)
   )
 
   if (sortOrder === 'asc') {
@@ -113,17 +132,17 @@ export default function ProductsClient() {
   }
 
   return (
-    <div className="bg-light dark:bg-dark flex min-h-screen flex-col items-center py-20 transition-colors duration-500">
+    <div className="flex min-h-screen flex-col items-center bg-light py-20 transition-colors duration-500 dark:bg-dark">
       <div className="container mb-8 flex w-full max-w-7xl flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
         <SearchInput search={search} setSearch={setSearch} />
         <CategoryDropdown
           categories={categories}
-          selectedCategory={selectedCategory}
-          setSelectedCategory={setSelectedCategory}
+          selectedCategories={selectedCategories}
+          setSelectedCategories={setSelectedCategories}
           categoryOpen={categoryOpen}
           setCategoryOpen={setCategoryOpen}
         />
-        <SortButton
+        <SortDropdown
           sortOrder={sortOrder}
           setSortOrder={setSortOrder}
           sortOpen={sortOpen}

@@ -34,7 +34,7 @@ const sortOptions: DropdownOption<'default' | 'asc' | 'desc'>[] = [
   },
 ]
 
-export default function SortButton({
+export default function SortDropdown({
   sortOrder,
   setSortOrder,
   sortOpen,
@@ -44,7 +44,10 @@ export default function SortButton({
     <Dropdown
       options={sortOptions}
       selected={sortOrder}
-      setSelected={setSortOrder}
+      setSelected={(value) => {
+        if (Array.isArray(value)) return
+        setSortOrder(value)
+      }}
       open={sortOpen}
       setOpen={setSortOpen}
     />
