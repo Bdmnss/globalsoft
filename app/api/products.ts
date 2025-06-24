@@ -16,3 +16,8 @@ export const getProductsByCategory = async (categorySlug: string) => {
   const res = await axiosInstance.get(`/category/${categorySlug}`)
   return res.data
 }
+
+export const searchProducts = async (query: string) => {
+  const res = await axiosInstance.get(`/search?q=${encodeURIComponent(query)}`)
+  return res.data
+}

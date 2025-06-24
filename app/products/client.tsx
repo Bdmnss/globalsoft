@@ -11,6 +11,7 @@ import SortDropdown from '@/components/SortDropdown'
 import { Category } from '@/types/types'
 import { fetchProducts } from '../api/useProducts'
 import Spinner from '@/components/Spinner'
+import { useDebounce } from '@/hooks/useDebounce'
 
 export default function ProductsClient({
   categories,
@@ -26,6 +27,7 @@ export default function ProductsClient({
     useState<string>(initialCategory)
   const [categoryOpen, setCategoryOpen] = useState(false)
   const [search, setSearch] = useState(initialSearch)
+  const debouncedSearch = useDebounce(search, 400)
   const [sortOrder, setSortOrder] = useState<'default' | 'asc' | 'desc'>(
     'default'
   )
@@ -36,18 +38,18 @@ export default function ProductsClient({
     isPending,
     isError,
   } = useQuery({
-    queryKey: ['products', selectedCategory],
-    queryFn: () => fetchProducts(selectedCategory),
+    queryKey: ['products', selectedCategory, debouncedSearch],
+    queryFn: () => fetchProducts(selectedCategory, debouncedSearch),
   })
 
   useEffect(() => {
     const params = new URLSearchParams()
     if (selectedCategory && selectedCategory !== 'All')
       params.set('category', selectedCategory)
-    if (search) params.set('search', search)
+    if (debouncedSearch) params.set('search', debouncedSearch)
     router.replace(`/products?${params.toString()}`, { scroll: false })
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedCategory, search])
+  }, [selectedCategory, debouncedSearch])
 
   const filteredProducts =
     sortOrder === 'asc'
@@ -55,10 +57,6 @@ export default function ProductsClient({
       : sortOrder === 'desc'
         ? [...products].sort((a, b) => b.price - a.price)
         : products
-
-  if (isPending) {
-    return <Spinner fullScreen text="Loading products..." />
-  }
 
   if (isError) {
     return (
@@ -92,8 +90,14 @@ export default function ProductsClient({
           setSortOpen={setSortOpen}
         />
       </div>
-      <ProductsGrid products={filteredProducts} />
-      <Pagination />
+      {isPending ? (
+        <Spinner fullScreen text="Loading products..." />
+      ) : (
+        <div>
+          <ProductsGrid products={filteredProducts} />
+          <Pagination />
+        </div>
+      )}
     </div>
   )
 }
