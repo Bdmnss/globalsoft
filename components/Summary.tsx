@@ -1,6 +1,6 @@
 import { useCartStore } from '@/stores/cartStore'
 import Image from 'next/image'
-import React from 'react'
+import React, { useState } from 'react'
 import { FaTrash } from 'react-icons/fa'
 
 const Summary = () => {
@@ -12,19 +12,34 @@ const Summary = () => {
     removeFromCart,
   } = useCartStore()
 
+  const [imgLoaded, setImgLoaded] = useState<{ [id: number]: boolean }>({})
+
   return (
     <div className="flex flex-col gap-10">
       <h2 className="text-[1.3rem] font-bold text-orange">SUMMARY</h2>
       <ul className="flex flex-col gap-6">
         {cartItems.map((item) => (
           <li key={item.id} className="flex items-center gap-6">
-            <Image
-              src={item.thumbnail}
-              alt={item.title}
-              width={64}
-              height={64}
-              className="size-24 rounded-lg"
-            />
+            <div className="relative">
+              {!imgLoaded[item.id] && (
+                <div className="absolute inset-0 z-10 flex h-full w-full items-center justify-center bg-white dark:bg-black">
+                  <span className="h-8 w-8 animate-spin rounded-full border-2 border-orange border-t-transparent" />
+                </div>
+              )}
+              <Image
+                src={item.thumbnail}
+                alt={item.title}
+                width={64}
+                height={64}
+                className={`size-24 rounded-lg transition-opacity duration-300 ${
+                  imgLoaded[item.id] ? 'opacity-100' : 'opacity-0'
+                }`}
+                loading="lazy"
+                onLoad={() =>
+                  setImgLoaded((prev) => ({ ...prev, [item.id]: true }))
+                }
+              />
+            </div>
             <div className="flex flex-col gap-3">
               <h3 className="text-[1.4rem] font-bold text-black dark:text-white">
                 {item.title}
