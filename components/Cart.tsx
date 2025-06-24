@@ -3,15 +3,9 @@ import Image from 'next/image'
 import { useCartStore } from '@/stores/cartStore'
 import { FaTrash } from 'react-icons/fa'
 import { twJoin, twMerge } from 'tailwind-merge'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 
-import { RefObject } from 'react'
-
-interface CartProps {
-  cartWrapperRef: RefObject<HTMLDivElement | null>
-}
-
-export default function Cart({ cartWrapperRef }: CartProps) {
+export default function Cart() {
   const {
     isCartOpen,
     cartItems,
@@ -25,13 +19,18 @@ export default function Cart({ cartWrapperRef }: CartProps) {
   } = useCartStore()
 
   const [imgLoaded, setImgLoaded] = useState<{ [id: number]: boolean }>({})
+  const cartRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
+      const clickedEl = event.target as HTMLElement
+
+      if (clickedEl.closest('.ignore-click-outside')) return
+
       if (
         isCartOpen &&
-        cartWrapperRef.current &&
-        !cartWrapperRef.current.contains(event.target as Node)
+        cartRef.current &&
+        !cartRef.current.contains(event.target as Node)
       ) {
         setCartOpen(false)
       }
@@ -42,11 +41,11 @@ export default function Cart({ cartWrapperRef }: CartProps) {
     return () => {
       document.removeEventListener('mousedown', handleClickOutside)
     }
-  }, [isCartOpen, setCartOpen, cartWrapperRef])
+  }, [isCartOpen, setCartOpen, cartRef])
 
   return (
     <div
-      ref={cartWrapperRef}
+      ref={cartRef}
       className={twMerge(
         twJoin(
           'fixed right-[4%] z-10 flex h-[45vh] w-11/12 flex-col gap-6 overflow-y-auto rounded-xl bg-white p-4 dark:bg-black sm:p-8 md:h-96 md:w-2/3 lg:w-1/2 lg:p-12 2xl:w-1/3',

@@ -2,7 +2,6 @@
 
 import { FaShoppingCart, FaHeart } from 'react-icons/fa'
 import Link from 'next/link'
-import { useRef } from 'react'
 import ThemeToggleButton from '@/components/ThemeToggleButton'
 import UserDropdown from './UserDropdown'
 import Cart from './Cart'
@@ -12,7 +11,6 @@ export default function Header() {
   const setCartOpen = useCartStore((state) => state.setCartOpen)
   const isCartOpen = useCartStore((state) => state.isCartOpen)
   const cartItemsQuantity = useCartStore((state) => state.cartItemsQuantity)
-  const cartWrapperRef = useRef<HTMLDivElement>(null)
 
   return (
     <header className="relative flex justify-center pb-28">
@@ -24,7 +22,7 @@ export default function Header() {
           GLOBALSOFT
         </Link>
 
-        <div className="flex items-center gap-4" ref={cartWrapperRef}>
+        <div className="flex items-center gap-4">
           <Link href="/favorites" className="relative cursor-pointer">
             <FaHeart size={20} className="text-white hover:text-orange" />
           </Link>
@@ -38,7 +36,7 @@ export default function Header() {
             role="button"
             aria-label="Open cart"
           >
-            <div className="relative">
+            <div className="ignore-click-outside relative cursor-pointer">
               <FaShoppingCart
                 size={20}
                 className="text-white hover:text-orange"
@@ -55,7 +53,7 @@ export default function Header() {
         </div>
       </div>
 
-      <Cart cartWrapperRef={cartWrapperRef} />
+      <Cart />
     </header>
   )
 }
