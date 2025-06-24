@@ -2,23 +2,23 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
+import { useQuery } from '@tanstack/react-query'
 import CategoryDropdown from '@/components/CategoryDropdown'
 import SearchInput from '@/components/SearchInput'
 import ProductsGrid from '@/components/ProductsGrid'
 import Pagination from '@/components/Pagination'
 import SortDropdown from '@/components/SortDropdown'
-import { Category, Product } from '@/types/types'
+import { Category } from '@/types/types'
+import { fetchProducts } from '../api/useProducts'
+import Spinner from '@/components/Spinner'
 
 export default function ProductsClient({
   categories,
-  products,
 }: {
   categories: Category[]
-  products: Product[]
 }) {
   const router = useRouter()
   const searchParams = useSearchParams()
-
   const initialCategory = searchParams.get('category') || 'All'
   const initialSearch = searchParams.get('search') || ''
 
@@ -30,6 +30,15 @@ export default function ProductsClient({
     'default'
   )
   const [sortOpen, setSortOpen] = useState(false)
+
+  const {
+    data: products,
+    isPending,
+    isError,
+  } = useQuery({
+    queryKey: ['products', selectedCategory],
+    queryFn: () => fetchProducts(selectedCategory),
+  })
 
   useEffect(() => {
     const params = new URLSearchParams()
@@ -46,6 +55,24 @@ export default function ProductsClient({
       : sortOrder === 'desc'
         ? [...products].sort((a, b) => b.price - a.price)
         : products
+
+  if (isPending) {
+    return <Spinner fullScreen text="Loading products..." />
+  }
+
+  if (isError) {
+    return (
+      <div className="flex h-screen flex-col items-center justify-center bg-light dark:bg-dark">
+        <span className="mb-4 text-7xl font-bold text-red-500">404</span>
+        <span className="mb-2 text-2xl font-semibold text-red-500">
+          Failed to load products.
+        </span>
+        <span className="text-base text-gray-500 dark:text-gray-400">
+          Please try again later or check your connection.
+        </span>
+      </div>
+    )
+  }
 
   return (
     <div className="flex min-h-screen flex-col items-center bg-light py-20 transition-colors duration-500 dark:bg-dark">
