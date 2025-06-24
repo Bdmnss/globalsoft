@@ -38,7 +38,7 @@ export default function Header() {
             role="button"
             aria-label="Open cart"
           >
-            <div className="relative">
+            <div className="relative" ref={cartWrapperRef}>
               <FaShoppingCart
                 size={20}
                 className="text-white hover:text-orange"
