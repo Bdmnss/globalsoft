@@ -11,6 +11,7 @@ import { useFavoritesStore } from '@/stores/favoritesStore'
 
 export default function ProductCard({ product }: { product: Product }) {
   const [hovered, setHovered] = useState(false)
+  const [imgLoaded, setImgLoaded] = useState(false)
   const { addFavorite, removeFavorite, isFavorite } = useFavoritesStore()
   const favorite = isFavorite(product.id)
 
@@ -54,13 +55,27 @@ export default function ProductCard({ product }: { product: Product }) {
             {favorite ? <FaHeart /> : <FaRegHeart />}
           </button>
         </div>
-        <Image
-          width={160}
-          height={160}
-          src={product.thumbnail}
-          alt={product.title}
-          className="mb-4 size-40 self-center rounded object-cover"
-        />
+        <div className="relative mb-4 flex items-center justify-center">
+          {!imgLoaded && (
+            <div className="absolute inset-0 z-10 flex items-center justify-center bg-white dark:bg-charcoal">
+              <span className="h-8 w-8 animate-spin rounded-full border-2 border-orange border-t-transparent" />
+            </div>
+          )}
+          <Image
+            width={160}
+            height={160}
+            src={product.thumbnail}
+            alt={product.title}
+            className={twMerge(
+              twJoin(
+                'size-40 self-center rounded object-cover transition-opacity duration-300',
+                imgLoaded ? 'opacity-100' : 'opacity-0'
+              )
+            )}
+            loading="lazy"
+            onLoad={() => setImgLoaded(true)}
+          />
+        </div>
         <div className="flex items-center justify-between">
           <div className="flex flex-col">
             <h3 className="text-xl font-semibold text-black dark:text-white">

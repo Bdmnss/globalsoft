@@ -8,6 +8,7 @@ import { FaHeart, FaShoppingCart, FaRegHeart } from 'react-icons/fa'
 import Spinner from '@/components/Spinner'
 import NotFound from '@/app/not-found'
 import { twMerge, twJoin } from 'tailwind-merge'
+import { useState } from 'react'
 
 export default function ProductClient() {
   const params = useParams()
@@ -15,7 +16,8 @@ export default function ProductClient() {
   const id = slug?.split('-').pop() || ''
   const { data: product, isLoading, isError } = useProduct(id)
   const { addFavorite, removeFavorite, isFavorite } = useFavoritesStore()
-  const favorite = isFavorite(product.id)
+  const favorite = product ? isFavorite(product.id) : false
+  const [imgLoaded, setImgLoaded] = useState(false)
 
   if (isLoading) {
     return <Spinner text="Loading product details..." fullScreen />
@@ -27,13 +29,25 @@ export default function ProductClient() {
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center gap-8 bg-light px-4 py-8 dark:bg-dark lg:flex-row">
-      <div className="container flex flex-1 items-center justify-center">
+      <div className="container relative flex flex-1 items-center justify-center">
+        {!imgLoaded && (
+          <div className="absolute inset-0 z-10 flex items-center justify-center bg-light dark:bg-dark">
+            <Spinner text="Loading image..." />
+          </div>
+        )}
         <Image
           src={product.thumbnail}
           alt={product.title}
           width={400}
           height={400}
-          className="size-full max-w-xs rounded object-cover sm:max-w-md"
+          className={twMerge(
+            twJoin(
+              'size-full max-w-xs rounded object-cover transition-opacity duration-300 sm:max-w-md',
+              imgLoaded ? 'opacity-100' : 'opacity-0'
+            )
+          )}
+          loading="lazy"
+          onLoad={() => setImgLoaded(true)}
         />
       </div>
       <div className="container flex flex-1 flex-col justify-between gap-6">
