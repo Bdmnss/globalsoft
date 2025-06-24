@@ -1,9 +1,10 @@
 'use client'
 
+import { Category } from '@/types/types'
 import Dropdown from './Dropdown'
 
 interface Props {
-  categories: string[]
+  categories: Category[]
   selectedCategory: string
   setSelectedCategory: (cat: string) => void
   categoryOpen: boolean
@@ -17,10 +18,13 @@ export default function CategoryDropdown({
   categoryOpen,
   setCategoryOpen,
 }: Props) {
-  const options = categories.map((cat) => ({
-    value: cat,
-    label: cat,
-  }))
+  const options = [
+    { value: 'All', label: 'All' },
+    ...categories.map((cat) => ({
+      value: cat.slug,
+      label: cat.name,
+    })),
+  ]
 
   return (
     <Dropdown

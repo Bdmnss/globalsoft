@@ -7,6 +7,7 @@ import SearchInput from '@/components/SearchInput'
 import ProductsGrid from '@/components/ProductsGrid'
 import Pagination from '@/components/Pagination'
 import SortDropdown from '@/components/SortDropdown'
+import { Category } from '@/types/types'
 
 const products = [
   {
@@ -83,19 +84,17 @@ const products = [
   },
 ]
 
-const categories = [
-  'All',
-  ...Array.from(new Set(products.map((p) => p.category))),
-]
-
-export default function ProductsClient() {
+export default function ProductsClient({
+  categories,
+}: {
+  categories: Category[]
+}) {
   const router = useRouter()
   const searchParams = useSearchParams()
 
   const initialCategory = searchParams.get('category') || 'All'
   const initialSearch = searchParams.get('search') || ''
 
-  // შეცვლილია: მხოლოდ ერთი კატეგორია შეიძლება იყოს არჩეული
   const [selectedCategory, setSelectedCategory] =
     useState<string>(initialCategory)
   const [categoryOpen, setCategoryOpen] = useState(false)
