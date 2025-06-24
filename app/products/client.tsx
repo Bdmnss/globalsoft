@@ -32,15 +32,18 @@ export default function ProductsClient({
     'default'
   )
   const [sortOpen, setSortOpen] = useState(false)
+  const [page, setPage] = useState(1)
+  const limit = 9
 
-  const {
-    data: products,
-    isPending,
-    isError,
-  } = useQuery({
-    queryKey: ['products', selectedCategory, debouncedSearch],
-    queryFn: () => fetchProducts(selectedCategory, debouncedSearch),
+  const { data, isPending, isError } = useQuery({
+    queryKey: ['products', selectedCategory, debouncedSearch, page],
+    queryFn: () =>
+      fetchProducts(selectedCategory, debouncedSearch, page, limit),
   })
+
+  const products = data?.products || []
+  const total = data?.total || 0
+  const pageCount = Math.ceil(total / limit)
 
   useEffect(() => {
     const params = new URLSearchParams()
@@ -49,6 +52,10 @@ export default function ProductsClient({
     if (debouncedSearch) params.set('search', debouncedSearch)
     router.replace(`/products?${params.toString()}`, { scroll: false })
     // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedCategory, debouncedSearch])
+
+  useEffect(() => {
+    setPage(1)
   }, [selectedCategory, debouncedSearch])
 
   const filteredProducts =
@@ -93,9 +100,9 @@ export default function ProductsClient({
       {isPending ? (
         <Spinner fullScreen text="Loading products..." />
       ) : (
-        <div>
+        <div className="w-full max-w-7xl">
           <ProductsGrid products={filteredProducts} />
-          <Pagination />
+          <Pagination page={page} pageCount={pageCount} setPage={setPage} />
         </div>
       )}
     </div>

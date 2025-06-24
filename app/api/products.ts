@@ -7,17 +7,28 @@ export const getCategories = async () => {
   return res.data
 }
 
-export const getAllProducts = async () => {
-  const res = await axiosInstance.get('/')
+export const getAllProducts = async (page = 1, limit = 9) => {
+  const skip = (page - 1) * limit
+  const res = await axiosInstance.get(`/?limit=${limit}&skip=${skip}`)
   return res.data
 }
 
-export const getProductsByCategory = async (categorySlug: string) => {
-  const res = await axiosInstance.get(`/category/${categorySlug}`)
+export const getProductsByCategory = async (
+  categorySlug: string,
+  page = 1,
+  limit = 9
+) => {
+  const skip = (page - 1) * limit
+  const res = await axiosInstance.get(
+    `/category/${categorySlug}?limit=${limit}&skip=${skip}`
+  )
   return res.data
 }
 
-export const searchProducts = async (query: string) => {
-  const res = await axiosInstance.get(`/search?q=${encodeURIComponent(query)}`)
+export const searchProducts = async (query: string, page = 1, limit = 9) => {
+  const skip = (page - 1) * limit
+  const res = await axiosInstance.get(
+    `/search?q=${encodeURIComponent(query)}&limit=${limit}&skip=${skip}`
+  )
   return res.data
 }

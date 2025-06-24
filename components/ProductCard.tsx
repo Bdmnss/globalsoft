@@ -3,6 +3,7 @@
 import Image from 'next/image'
 import { useState } from 'react'
 import { FaHeart, FaShoppingCart, FaRegHeart } from 'react-icons/fa'
+import { twMerge, twJoin } from 'tailwind-merge'
 
 import { Product } from '@/types/types'
 
@@ -29,11 +30,14 @@ export default function ProductCard({ product }: { product: Product }) {
         </button>
         <button
           onClick={handleFavorite}
-          className={`flex items-center gap-2 rounded px-3 py-2 shadow transition ${
-            isFavorite
-              ? 'bg-orange text-white hover:bg-orangeLight'
-              : 'bg-white text-orange hover:bg-orangeLight hover:text-white'
-          }`}
+          className={twMerge(
+            twJoin(
+              'flex items-center gap-2 rounded px-3 py-2 shadow transition',
+              isFavorite
+                ? 'bg-orange text-white hover:bg-orangeLight'
+                : 'bg-white text-orange hover:bg-orangeLight hover:text-white'
+            )
+          )}
           title={isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}
         >
           {isFavorite ? <FaHeart /> : <FaRegHeart />}
@@ -73,11 +77,14 @@ export default function ProductCard({ product }: { product: Product }) {
           </button>
           <button
             onClick={handleFavorite}
-            className={`flex items-center gap-2 rounded px-4 py-2 shadow transition ${
-              isFavorite
-                ? 'bg-orange text-white hover:bg-orangeLight'
-                : 'bg-white text-orange hover:bg-orangeLight hover:text-white'
-            }`}
+            className={twMerge(
+              twJoin(
+                'flex items-center gap-2 rounded px-4 py-2 shadow transition',
+                isFavorite
+                  ? 'bg-orange text-white hover:bg-orangeLight'
+                  : 'bg-white text-orange hover:bg-orangeLight hover:text-white'
+              )
+            )}
             title={isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}
           >
             {isFavorite ? <FaHeart /> : <FaRegHeart />}

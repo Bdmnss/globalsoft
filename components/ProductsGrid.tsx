@@ -5,7 +5,7 @@ import { Product } from '@/types/types'
 
 export default function ProductsGrid({ products }: { products: Product[] }) {
   return (
-    <div className="container grid w-full max-w-7xl grid-cols-1 gap-8 py-8 sm:grid-cols-2 lg:grid-cols-3">
+    <div className="container grid w-full max-w-7xl auto-rows-fr grid-cols-1 gap-8 py-8 sm:grid-cols-2 lg:grid-cols-3">
       {products.map((product) => (
         <ProductCard key={product.id} product={product} />
       ))}

@@ -1,25 +1,74 @@
 'use client'
 
-export default function Pagination() {
+import { twMerge, twJoin } from 'tailwind-merge'
+
+interface PaginationProps {
+  page: number
+  pageCount: number
+  setPage: (page: number) => void
+}
+
+export default function Pagination({
+  page,
+  pageCount,
+  setPage,
+}: PaginationProps) {
+  if (pageCount <= 1) return null
+
+  const visibleCount = 5
+  let start = Math.max(1, page - Math.floor(visibleCount / 2))
+  let end = start + visibleCount - 1
+
+  if (end > pageCount) {
+    end = pageCount
+    start = Math.max(1, end - visibleCount + 1)
+  }
+
+  const pages = []
+  for (let i = start; i <= end; i++) {
+    pages.push(i)
+  }
+
   return (
-    <div className="mt-8 flex items-center justify-center gap-2">
-      <button className="hover:bg-orange dark:bg-charcoal dark:hover:bg-orange rounded bg-white px-3 py-2 text-black shadow hover:text-white dark:text-white">
+    <div className="mt-8 flex flex-wrap items-center justify-center gap-2">
+      <button
+        onClick={() => setPage(page - 1)}
+        disabled={page === 1}
+        className={twMerge(
+          twJoin(
+            'rounded bg-white px-2 py-1 text-base text-black shadow hover:bg-orange hover:text-white disabled:opacity-50',
+            'dark:bg-charcoal dark:text-white dark:hover:bg-orange sm:px-3 sm:py-2 sm:text-base'
+          )
+        )}
+      >
         &lt;
       </button>
-      <button className="bg-orange rounded px-3 py-2 text-white shadow">
-        1
-      </button>
-      <button className="hover:bg-orange dark:bg-charcoal dark:hover:bg-orange rounded bg-white px-3 py-2 text-black shadow hover:text-white dark:text-white">
-        2
-      </button>
-      <button className="hover:bg-orange dark:bg-charcoal dark:hover:bg-orange rounded bg-white px-3 py-2 text-black shadow hover:text-white dark:text-white">
-        3
-      </button>
-      <span className="px-2 text-gray-400">...</span>
-      <button className="hover:bg-orange dark:bg-charcoal dark:hover:bg-orange rounded bg-white px-3 py-2 text-black shadow hover:text-white dark:text-white">
-        10
-      </button>
-      <button className="hover:bg-orange dark:bg-charcoal dark:hover:bg-orange rounded bg-white px-3 py-2 text-black shadow hover:text-white dark:text-white">
+      {pages.map((p) => (
+        <button
+          key={p}
+          onClick={() => setPage(p)}
+          className={twMerge(
+            twJoin(
+              'rounded px-2 py-1 text-base shadow sm:px-3 sm:py-2',
+              page === p
+                ? 'bg-orange text-white'
+                : 'bg-white text-black hover:bg-orange hover:text-white dark:bg-charcoal dark:text-white dark:hover:bg-orange'
+            )
+          )}
+        >
+          {p}
+        </button>
+      ))}
+      <button
+        onClick={() => setPage(page + 1)}
+        disabled={page === pageCount}
+        className={twMerge(
+          twJoin(
+            'rounded bg-white px-2 py-1 text-base text-black shadow hover:bg-orange hover:text-white disabled:opacity-50',
+            'dark:bg-charcoal dark:text-white dark:hover:bg-orange sm:px-3 sm:py-2 sm:text-base'
+          )
+        )}
+      >
         &gt;
       </button>
     </div>
