@@ -25,17 +25,17 @@ export default function ProductClient() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center gap-8 bg-light px-4 py-8 dark:bg-dark sm:flex-row">
-      <div className="flex flex-1 items-center justify-center">
+    <div className="flex min-h-screen flex-col items-center justify-center gap-8 bg-light px-4 py-8 dark:bg-dark lg:flex-row">
+      <div className="container flex flex-1 items-center justify-center">
         <Image
           src={product.thumbnail}
           alt={product.title}
           width={400}
           height={400}
-          className="h-64 w-full max-w-xs rounded object-cover sm:h-full sm:max-w-md"
+          className="size-full max-w-xs rounded object-cover sm:max-w-md"
         />
       </div>
-      <div className="flex flex-1 flex-col justify-between gap-6">
+      <div className="container flex flex-1 flex-col justify-between gap-6">
         <div>
           <h1 className="mb-2 text-3xl font-bold text-orange sm:text-4xl">
             {product.title}
