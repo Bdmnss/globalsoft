@@ -4,6 +4,7 @@ import { useProduct } from '@/app/api/useProducts'
 import { useParams } from 'next/navigation'
 import Image from 'next/image'
 import { useFavoritesStore } from '@/stores/favoritesStore'
+import { useCartStore } from '@/stores/cartStore'
 import { FaHeart, FaShoppingCart, FaRegHeart } from 'react-icons/fa'
 import Spinner from '@/components/Spinner'
 import NotFound from '@/app/not-found'
@@ -16,6 +17,7 @@ export default function ProductClient() {
   const id = slug?.split('-').pop() || ''
   const { data: product, isLoading, isError } = useProduct(id)
   const { addFavorite, removeFavorite, isFavorite } = useFavoritesStore()
+  const { addToCart, setCartOpen } = useCartStore()
   const favorite = product ? isFavorite(product.id) : false
   const [imgLoaded, setImgLoaded] = useState(false)
 
@@ -25,6 +27,11 @@ export default function ProductClient() {
 
   if (isError || !product) {
     return <NotFound />
+  }
+
+  const handleAddToCart = () => {
+    addToCart(product)
+    setCartOpen(true)
   }
 
   return (
@@ -73,6 +80,7 @@ export default function ProductClient() {
         </div>
         <div className="flex flex-col gap-4 sm:flex-row">
           <button
+            onClick={handleAddToCart}
             className={twMerge(
               twJoin(
                 'flex items-center justify-center gap-2 rounded bg-orange px-8 py-4 text-lg font-semibold text-white transition hover:bg-orangeLight'

@@ -26,6 +26,17 @@ module.exports = {
         dark: '#101010',
         orangeLight: '#fbaf85',
         charcoal: '#181818',
+        softGrayBg: '#80808038',
+      },
+      keyframes: {
+        'slide-top-to-bottom': {
+          '0%': { transform: 'translateY(-100%)', opacity: '0' },
+          '100%': { transform: 'translateY(0)', opacity: '1' },
+        },
+      },
+      animation: {
+        'slide-top-to-bottom':
+          'slide-top-to-bottom 0.4s cubic-bezier(.4,0,.2,1)',
       },
     },
   },
