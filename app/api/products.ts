@@ -32,3 +32,9 @@ export const searchProducts = async (query: string, page = 1, limit = 9) => {
   )
   return res.data
 }
+
+export const getProductById = async (id: string) => {
+  const res = await fetch(`https://dummyjson.com/products/${id}`)
+  if (!res.ok) return null
+  return res.json()
+}
