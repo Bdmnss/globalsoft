@@ -7,13 +7,20 @@ import { FaHeart, FaShoppingCart, FaRegHeart } from 'react-icons/fa'
 import { twMerge, twJoin } from 'tailwind-merge'
 
 import { Product } from '@/types/types'
+import { useFavoritesStore } from '@/stores/favoritesStore'
 
 export default function ProductCard({ product }: { product: Product }) {
   const [hovered, setHovered] = useState(false)
-  const [isFavorite, setIsFavorite] = useState(false)
+  const { addFavorite, removeFavorite, isFavorite } = useFavoritesStore()
+  const favorite = isFavorite(product.id)
 
-  const handleFavorite = () => {
-    setIsFavorite((prev) => !prev)
+  const handleFavorite = (e: React.MouseEvent) => {
+    e.preventDefault()
+    if (favorite) {
+      removeFavorite(product.id)
+    } else {
+      addFavorite(product)
+    }
   }
 
   const slug = `${product.title.replace(/\s+/g, '-').toLowerCase()}-${product.price}-${product.id}`
@@ -37,14 +44,14 @@ export default function ProductCard({ product }: { product: Product }) {
             className={twMerge(
               twJoin(
                 'flex items-center gap-2 rounded px-3 py-2 shadow transition',
-                isFavorite
+                favorite
                   ? 'bg-orange text-white hover:bg-orangeLight'
                   : 'bg-white text-orange hover:bg-orangeLight hover:text-white'
               )
             )}
-            title={isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}
+            title={favorite ? 'Remove from Favorites' : 'Add to Favorites'}
           >
-            {isFavorite ? <FaHeart /> : <FaRegHeart />}
+            {favorite ? <FaHeart /> : <FaRegHeart />}
           </button>
         </div>
         <Image
@@ -84,15 +91,15 @@ export default function ProductCard({ product }: { product: Product }) {
               className={twMerge(
                 twJoin(
                   'flex items-center gap-2 rounded px-4 py-2 shadow transition',
-                  isFavorite
+                  favorite
                     ? 'bg-orange text-white hover:bg-orangeLight'
                     : 'bg-white text-orange hover:bg-orangeLight hover:text-white'
                 )
               )}
-              title={isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}
+              title={favorite ? 'Remove from Favorites' : 'Add to Favorites'}
             >
-              {isFavorite ? <FaHeart /> : <FaRegHeart />}
-              {isFavorite ? 'Remove Favorite' : 'Favorite'}
+              {favorite ? <FaHeart /> : <FaRegHeart />}
+              {favorite ? 'Remove Favorite' : 'Favorite'}
             </button>
           </div>
         )}

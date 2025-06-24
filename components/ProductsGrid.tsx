@@ -10,7 +10,7 @@ export default function ProductsGrid({ products }: { products: Product[] }) {
         <ProductCard key={product.id} product={product} />
       ))}
       {products.length === 0 && (
-        <div className="col-span-full text-center text-xl text-gray-500">
+        <div className="col-span-full text-center text-3xl text-orange">
           No products found.
         </div>
       )}

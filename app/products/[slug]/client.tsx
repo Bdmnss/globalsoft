@@ -3,7 +3,7 @@
 import { useProduct } from '@/app/api/useProducts'
 import { useParams } from 'next/navigation'
 import Image from 'next/image'
-import { useState } from 'react'
+import { useFavoritesStore } from '@/stores/favoritesStore'
 import { FaHeart, FaShoppingCart, FaRegHeart } from 'react-icons/fa'
 import Spinner from '@/components/Spinner'
 import NotFound from '@/app/not-found'
@@ -14,7 +14,8 @@ export default function ProductClient() {
   const slug = params?.slug as string
   const id = slug?.split('-').pop() || ''
   const { data: product, isLoading, isError } = useProduct(id)
-  const [isFavorite, setIsFavorite] = useState(false)
+  const { addFavorite, removeFavorite, isFavorite } = useFavoritesStore()
+  const favorite = isFavorite(product.id)
 
   if (isLoading) {
     return <Spinner text="Loading product details..." fullScreen />
@@ -69,19 +70,21 @@ export default function ProductClient() {
             Add to Cart
           </button>
           <button
-            onClick={() => setIsFavorite((f) => !f)}
+            onClick={() =>
+              favorite ? removeFavorite(product.id) : addFavorite(product)
+            }
             className={twMerge(
               twJoin(
                 'flex items-center justify-center gap-2 rounded border border-orange px-8 py-4 text-lg font-semibold transition',
-                isFavorite
+                favorite
                   ? 'bg-orange text-white hover:bg-orangeLight'
                   : 'bg-white text-orange hover:bg-orangeLight hover:text-white'
               )
             )}
-            title={isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}
+            title={favorite ? 'Remove from Favorites' : 'Add to Favorites'}
           >
-            {isFavorite ? <FaHeart /> : <FaRegHeart />}
-            {isFavorite ? 'Remove Favorite' : 'Add to Favorites'}
+            {favorite ? <FaHeart /> : <FaRegHeart />}
+            {favorite ? 'Remove Favorite' : 'Add to Favorites'}
           </button>
         </div>
       </div>
