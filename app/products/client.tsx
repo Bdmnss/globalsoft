@@ -16,8 +16,6 @@ export default function ProductsClient({
   categories: Category[]
   products: Product[]
 }) {
-  console.log(products)
-
   const router = useRouter()
   const searchParams = useSearchParams()
 
@@ -42,19 +40,12 @@ export default function ProductsClient({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedCategory, search])
 
-  let filteredProducts = products.filter(
-    (p) => selectedCategory === 'All' || p.category === selectedCategory
-  )
-
-  if (sortOrder === 'asc') {
-    filteredProducts = filteredProducts
-      .slice()
-      .sort((a, b) => a.price - b.price)
-  } else if (sortOrder === 'desc') {
-    filteredProducts = filteredProducts
-      .slice()
-      .sort((a, b) => b.price - a.price)
-  }
+  const filteredProducts =
+    sortOrder === 'asc'
+      ? [...products].sort((a, b) => a.price - b.price)
+      : sortOrder === 'desc'
+        ? [...products].sort((a, b) => b.price - a.price)
+        : products
 
   return (
     <div className="flex min-h-screen flex-col items-center bg-light py-20 transition-colors duration-500 dark:bg-dark">
