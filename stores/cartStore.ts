@@ -11,12 +11,14 @@ interface CartState {
   cartItems: CartProduct[]
   cartItemsQuantity: number
   totalPrice: number
+  isPaid: boolean
   setCartOpen: (open: boolean) => void
   addToCart: (product: Product) => void
   removeFromCart: (id: number) => void
   increaseQuantity: (id: number) => void
   decreaseQuantity: (id: number) => void
   clearCart: () => void
+  setIsPaid: (paid: boolean) => void
 }
 
 export const useCartStore = create<CartState>()(
@@ -26,6 +28,8 @@ export const useCartStore = create<CartState>()(
       cartItems: [],
       cartItemsQuantity: 0,
       totalPrice: 0,
+      isPaid: false,
+      setIsPaid: (paid) => set({ isPaid: paid }),
       setCartOpen: (open) => set({ isCartOpen: open }),
       addToCart: (product) => {
         const existing = get().cartItems.find((p) => p.id === product.id)
@@ -104,6 +108,7 @@ export const useCartStore = create<CartState>()(
       clearCart: () =>
         set({ cartItems: [], cartItemsQuantity: 0, totalPrice: 0 }),
     }),
+
     { name: 'cart' }
   )
 )

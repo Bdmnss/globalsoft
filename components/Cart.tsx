@@ -3,7 +3,7 @@ import Image from 'next/image'
 import { useCartStore } from '@/stores/cartStore'
 import { FaTrash } from 'react-icons/fa'
 import { twJoin, twMerge } from 'tailwind-merge'
-import { useRef, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { RefObject } from 'react'
 
@@ -25,7 +25,6 @@ export default function Cart({ cartWrapperRef }: CartProps) {
   } = useCartStore()
 
   const [imgLoaded, setImgLoaded] = useState<{ [id: number]: boolean }>({})
-  const cartRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -47,7 +46,7 @@ export default function Cart({ cartWrapperRef }: CartProps) {
 
   return (
     <div
-      ref={cartRef}
+      ref={cartWrapperRef}
       className={twMerge(
         twJoin(
           'fixed right-[4%] z-10 flex h-[45vh] w-11/12 flex-col gap-6 overflow-y-auto rounded-xl bg-white p-4 dark:bg-black sm:p-8 md:h-96 md:w-2/3 lg:w-1/2 lg:p-12 2xl:w-1/3',
