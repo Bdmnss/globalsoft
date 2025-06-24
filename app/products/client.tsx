@@ -95,9 +95,9 @@ export default function ProductsClient() {
   const initialCategory = searchParams.get('category') || 'All'
   const initialSearch = searchParams.get('search') || ''
 
-  const [selectedCategories, setSelectedCategories] = useState<string[]>(
-    initialCategory === 'All' ? ['All'] : [initialCategory]
-  )
+  // შეცვლილია: მხოლოდ ერთი კატეგორია შეიძლება იყოს არჩეული
+  const [selectedCategory, setSelectedCategory] =
+    useState<string>(initialCategory)
   const [categoryOpen, setCategoryOpen] = useState(false)
   const [search, setSearch] = useState(initialSearch)
   const [sortOrder, setSortOrder] = useState<'default' | 'asc' | 'desc'>(
@@ -107,18 +107,15 @@ export default function ProductsClient() {
 
   useEffect(() => {
     const params = new URLSearchParams()
-    if (selectedCategories.length > 0 && !selectedCategories.includes('All'))
-      params.set('category', selectedCategories.join(','))
+    if (selectedCategory && selectedCategory !== 'All')
+      params.set('category', selectedCategory)
     if (search) params.set('search', search)
     router.replace(`/products?${params.toString()}`, { scroll: false })
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedCategories, search])
+  }, [selectedCategory, search])
 
   let filteredProducts = products.filter(
-    (p) =>
-      selectedCategories.length === 0 ||
-      selectedCategories.includes('All') ||
-      selectedCategories.includes(p.category)
+    (p) => selectedCategory === 'All' || p.category === selectedCategory
   )
 
   if (sortOrder === 'asc') {
@@ -137,8 +134,8 @@ export default function ProductsClient() {
         <SearchInput search={search} setSearch={setSearch} />
         <CategoryDropdown
           categories={categories}
-          selectedCategories={selectedCategories}
-          setSelectedCategories={setSelectedCategories}
+          selectedCategory={selectedCategory}
+          setSelectedCategory={setSelectedCategory}
           categoryOpen={categoryOpen}
           setCategoryOpen={setCategoryOpen}
         />

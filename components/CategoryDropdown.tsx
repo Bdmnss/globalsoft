@@ -4,16 +4,16 @@ import Dropdown from './Dropdown'
 
 interface Props {
   categories: string[]
-  selectedCategories: string[]
-  setSelectedCategories: (cats: string[]) => void
+  selectedCategory: string
+  setSelectedCategory: (cat: string) => void
   categoryOpen: boolean
   setCategoryOpen: (open: boolean) => void
 }
 
 export default function CategoryDropdown({
   categories,
-  selectedCategories,
-  setSelectedCategories,
+  selectedCategory,
+  setSelectedCategory,
   categoryOpen,
   setCategoryOpen,
 }: Props) {
@@ -25,13 +25,10 @@ export default function CategoryDropdown({
   return (
     <Dropdown
       options={options}
-      selected={selectedCategories}
-      setSelected={(value) =>
-        setSelectedCategories(Array.isArray(value) ? value : [value])
-      }
+      selected={selectedCategory}
+      setSelected={setSelectedCategory}
       open={categoryOpen}
       setOpen={setCategoryOpen}
-      multi
     />
   )
 }

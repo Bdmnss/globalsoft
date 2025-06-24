@@ -44,10 +44,7 @@ export default function SortDropdown({
     <Dropdown
       options={sortOptions}
       selected={sortOrder}
-      setSelected={(value) => {
-        if (Array.isArray(value)) return
-        setSortOrder(value)
-      }}
+      setSelected={setSortOrder}
       open={sortOpen}
       setOpen={setSortOpen}
     />
