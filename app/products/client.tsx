@@ -7,88 +7,17 @@ import SearchInput from '@/components/SearchInput'
 import ProductsGrid from '@/components/ProductsGrid'
 import Pagination from '@/components/Pagination'
 import SortDropdown from '@/components/SortDropdown'
-import { Category } from '@/types/types'
-
-const products = [
-  {
-    id: 1,
-    name: 'Product 1',
-    price: 49.99,
-    rating: 4.5,
-    image: '/testImage.webp',
-    category: 'Electronics',
-  },
-  {
-    id: 2,
-    name: 'Product 2',
-    price: 39.99,
-    rating: 4.0,
-    image: '/testImage.webp',
-    category: 'Electronics',
-  },
-  {
-    id: 3,
-    name: 'Product 3',
-    price: 59.99,
-    rating: 5.0,
-    image: '/testImage.webp',
-    category: 'Books',
-  },
-  {
-    id: 4,
-    name: 'Product 4',
-    price: 29.99,
-    rating: 3.5,
-    image: '/testImage.webp',
-    category: 'Books',
-  },
-  {
-    id: 5,
-    name: 'Product 5',
-    price: 19.99,
-    rating: 4.2,
-    image: '/testImage.webp',
-    category: 'Clothing',
-  },
-  {
-    id: 6,
-    name: 'Product 6',
-    price: 99.99,
-    rating: 4.8,
-    image: '/testImage.webp',
-    category: 'Clothing',
-  },
-  {
-    id: 7,
-    name: 'Product 7',
-    price: 24.99,
-    rating: 3.8,
-    image: '/testImage.webp',
-    category: 'Electronics',
-  },
-  {
-    id: 8,
-    name: 'Product 8',
-    price: 79.99,
-    rating: 4.6,
-    image: '/testImage.webp',
-    category: 'Books',
-  },
-  {
-    id: 9,
-    name: 'Product 9',
-    price: 54.99,
-    rating: 4.3,
-    image: '/testImage.webp',
-    category: 'Clothing',
-  },
-]
+import { Category, Product } from '@/types/types'
 
 export default function ProductsClient({
   categories,
+  products,
 }: {
   categories: Category[]
+  products: Product[]
 }) {
+  console.log(products)
+
   const router = useRouter()
   const searchParams = useSearchParams()
 

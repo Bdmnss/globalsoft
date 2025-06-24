@@ -1,15 +1,7 @@
 'use client'
 
 import ProductCard from '@/components/ProductCard'
-
-interface Product {
-  id: number
-  name: string
-  price: number
-  rating: number
-  image: string
-  category: string
-}
+import { Product } from '@/types/types'
 
 export default function ProductsGrid({ products }: { products: Product[] }) {
   return (
