@@ -33,10 +33,15 @@ module.exports = {
           '0%': { transform: 'translateY(-100%)', opacity: '0' },
           '100%': { transform: 'translateY(0)', opacity: '1' },
         },
+        dropdownOpen: {
+          '0%': { opacity: 0, transform: 'scaleY(0.75)' },
+          '100%': { opacity: 1, transform: 'scaleY(1)' },
+        },
       },
       animation: {
         'slide-top-to-bottom':
           'slide-top-to-bottom 0.4s cubic-bezier(.4,0,.2,1)',
+        dropdown: 'dropdownOpen 0.18s cubic-bezier(0.4,0,0.2,1)',
       },
     },
   },

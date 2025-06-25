@@ -1,7 +1,7 @@
 'use client'
 
 import { useRef, useEffect, ReactNode } from 'react'
-import { FaChevronDown, FaChevronUp } from 'react-icons/fa'
+import { FaChevronDown } from 'react-icons/fa'
 import { twMerge, twJoin } from 'tailwind-merge'
 
 interface DropdownOption<T> {
@@ -83,10 +83,25 @@ export default function Dropdown<T extends string | number>({
                 ))
               : null}
         </span>
-        {open ? <FaChevronUp /> : <FaChevronDown />}
+        <span
+          className={twMerge(
+            'transition-transform duration-300',
+            open ? 'rotate-180' : 'rotate-0'
+          )}
+        >
+          <FaChevronDown />
+        </span>
       </button>
       {open && (
-        <div className="absolute left-0 top-full z-10 mt-1 w-full rounded border border-orange bg-white shadow dark:bg-charcoal">
+        <div
+          className={twMerge(
+            'absolute left-0 top-full z-10 mt-1 max-h-56 w-full overflow-y-auto rounded border border-orange bg-white shadow dark:bg-charcoal',
+            'animate-dropdown origin-top scale-y-100 opacity-100 transition-all duration-300'
+          )}
+          style={{
+            animation: 'dropdownOpen 0.18s cubic-bezier(0.4,0,0.2,1)',
+          }}
+        >
           {options.map((opt) => {
             const isSelected = selected === opt.value
             return (
