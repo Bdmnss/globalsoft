@@ -2,6 +2,7 @@ import {
   getAllProducts,
   getProductsByCategory,
   searchProducts,
+  getSortedProducts,
 } from './products'
 import { useQuery } from '@tanstack/react-query'
 import { getProductById } from '@/app/api/products'
@@ -10,17 +11,18 @@ export const fetchProducts = async (
   category: string,
   search: string,
   page = 1,
-  limit = 9
+  limit = 9,
+  sortOrder: 'default' | 'asc' | 'desc' = 'default'
 ) => {
+  if (sortOrder === 'asc' || sortOrder === 'desc') {
+    return await getSortedProducts(sortOrder, page, limit)
+  }
   if (search && search.trim() !== '') {
-    const data = await searchProducts(search, page, limit)
-    return data
+    return await searchProducts(search, page, limit)
   } else if (category && category !== 'All') {
-    const data = await getProductsByCategory(category, page, limit)
-    return data
+    return await getProductsByCategory(category, page, limit)
   } else {
-    const data = await getAllProducts(page, limit)
-    return data
+    return await getAllProducts(page, limit)
   }
 }
 

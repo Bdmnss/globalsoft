@@ -36,9 +36,9 @@ export default function ProductsClient({
   const limit = 9
 
   const { data, isPending, isError } = useQuery({
-    queryKey: ['products', selectedCategory, debouncedSearch, page],
+    queryKey: ['products', selectedCategory, debouncedSearch, page, sortOrder],
     queryFn: () =>
-      fetchProducts(selectedCategory, debouncedSearch, page, limit),
+      fetchProducts(selectedCategory, debouncedSearch, page, limit, sortOrder),
   })
 
   const products = data?.products || []
@@ -56,14 +56,7 @@ export default function ProductsClient({
 
   useEffect(() => {
     setPage(1)
-  }, [selectedCategory, debouncedSearch])
-
-  const filteredProducts =
-    sortOrder === 'asc'
-      ? [...products].sort((a, b) => a.price - b.price)
-      : sortOrder === 'desc'
-        ? [...products].sort((a, b) => b.price - a.price)
-        : products
+  }, [selectedCategory, debouncedSearch, sortOrder])
 
   if (isError) {
     return (
@@ -101,7 +94,7 @@ export default function ProductsClient({
         <Spinner fullScreen text="Loading products..." />
       ) : (
         <div className="w-full max-w-7xl">
-          <ProductsGrid products={filteredProducts} />
+          <ProductsGrid products={products} />
           <Pagination page={page} pageCount={pageCount} setPage={setPage} />
         </div>
       )}

@@ -34,7 +34,18 @@ export const searchProducts = async (query: string, page = 1, limit = 9) => {
 }
 
 export const getProductById = async (id: string) => {
-  const res = await fetch(`https://dummyjson.com/products/${id}`)
-  if (!res.ok) return null
-  return res.json()
+  const res = await axiosInstance.get(`/${id}`)
+  return res.data
+}
+
+export const getSortedProducts = async (
+  order: 'asc' | 'desc' = 'asc',
+  page = 1,
+  limit = 9
+) => {
+  const skip = (page - 1) * limit
+  const res = await axiosInstance.get(
+    `/?limit=${limit}&skip=${skip}&sortBy=price&order=${order}`
+  )
+  return res.data
 }
