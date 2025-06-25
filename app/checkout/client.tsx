@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import PaymentConfirmation from '@/components/PaymentConfirmation'
 import Summary from '@/components/Summary'
@@ -9,12 +9,17 @@ import { useCartStore } from '@/stores/cartStore'
 export default function Checkout() {
   const { isPaid, setIsPaid, cartItems } = useCartStore()
   const router = useRouter()
+  const [checked, setChecked] = useState(false)
 
   useEffect(() => {
-    if (typeof window !== 'undefined' && !localStorage.getItem('fake_token')) {
-      router.replace('/login')
+    if (!localStorage.getItem('fake_token')) {
+      router.replace('/login?redirect=/checkout')
+    } else {
+      setChecked(true)
     }
   }, [router])
+
+  if (!checked) return null
 
   return (
     <div className="flex min-h-screen flex-col items-center bg-light pt-10 transition-colors duration-500 dark:bg-dark">

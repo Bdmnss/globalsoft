@@ -6,7 +6,7 @@ import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useThemeStore } from '@/stores/themeStore'
 import AuthToggleButtons from '@/components/AuthToggleButtons'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { twMerge, twJoin } from 'tailwind-merge'
 import { useAuthStore } from '@/stores/authStore'
 
@@ -19,6 +19,8 @@ export default function Login() {
   const { theme } = useThemeStore()
   const router = useRouter()
   const { setHasToken } = useAuthStore()
+  const searchParams = useSearchParams()
+  const redirect = searchParams.get('redirect') || '/products'
 
   useEffect(() => {
     if (typeof window !== 'undefined' && localStorage.getItem('fake_token')) {
@@ -38,7 +40,7 @@ export default function Login() {
   const onSubmit = () => {
     localStorage.setItem('fake_token', '123456')
     setHasToken(true)
-    router.push('/products')
+    router.push(redirect)
   }
 
   return (
@@ -86,7 +88,7 @@ export default function Login() {
           </div>
           <button
             type="submit"
-            className="bg-orange hover:bg-orangeLight mt-4 w-full rounded p-3 text-2xl text-white"
+            className="mt-4 w-full rounded bg-orange p-3 text-2xl text-white hover:bg-orangeLight"
           >
             Login
           </button>
