@@ -15,7 +15,7 @@ export default function Spinner({
     <div
       className={twMerge(
         twJoin(
-          'flex items-center justify-center bg-light dark:bg-dark',
+          'flex items-center justify-center bg-light transition-colors duration-500 dark:bg-dark',
           fullScreen && 'h-screen'
         )
       )}

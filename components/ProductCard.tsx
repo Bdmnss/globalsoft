@@ -87,7 +87,7 @@ export default function ProductCard({ product }: { product: Product }) {
         </div>
         <div className="flex items-center justify-between">
           <div className="flex flex-col">
-            <h3 className="text-xl font-semibold text-black dark:text-white">
+            <h3 className="text-xl font-semibold text-black transition-colors duration-500 dark:text-white">
               {product.title}
             </h3>
             <p className="text-lg font-bold text-orange">
@@ -96,7 +96,7 @@ export default function ProductCard({ product }: { product: Product }) {
           </div>
           <div className="flex items-center">
             <span className="mr-1 text-yellow-400">★</span>
-            <span className="text-base text-black dark:text-white">
+            <span className="text-base text-black transition-colors duration-500 dark:text-white">
               {product.rating}
             </span>
           </div>

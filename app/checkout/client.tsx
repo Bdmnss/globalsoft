@@ -18,8 +18,8 @@ export default function Checkout() {
 
   return (
     <div className="flex min-h-screen flex-col items-center bg-light pt-10 transition-colors duration-500 dark:bg-dark">
-      <div className="container p-10 md:bg-white md:dark:bg-black">
-        <h1 className="mb-12 text-4xl font-bold text-black dark:text-white md:text-5xl">
+      <div className="container p-10 transition-colors duration-500 md:bg-white md:dark:bg-black">
+        <h1 className="mb-12 text-4xl font-bold text-black transition-colors duration-500 dark:text-white md:text-5xl">
           Checkout
         </h1>
 

@@ -56,13 +56,13 @@ export default function Dropdown<T extends string | number>({
   return (
     <div className="relative w-full lg:w-72" ref={dropdownRef}>
       {label && (
-        <span className="mr-2 text-lg font-semibold text-black dark:text-white">
+        <span className="mr-2 text-lg font-semibold text-black transition-colors duration-500 dark:text-white">
           {label}
         </span>
       )}
       <button
         className={twMerge(
-          'flex w-full items-center justify-between rounded border border-orange bg-white px-4 py-2 text-lg font-semibold text-black dark:bg-charcoal dark:text-white',
+          'flex w-full items-center justify-between rounded border border-orange bg-white px-4 py-2 text-lg font-semibold text-black transition-colors duration-500 dark:bg-charcoal dark:text-white',
           buttonClassName
         )}
         onClick={() => setOpen(!open)}

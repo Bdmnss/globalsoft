@@ -32,11 +32,14 @@ export default function Pagination({
   return (
     <div className="mt-8 flex flex-wrap items-center justify-center gap-2">
       <button
-        onClick={() => setPage(page - 1)}
+        onClick={() => {
+          setPage(page - 1)
+          window.scrollTo({ top: 0, behavior: 'smooth' })
+        }}
         disabled={page === 1}
         className={twMerge(
           twJoin(
-            'rounded bg-white px-2 py-1 text-base text-black shadow hover:bg-orange hover:text-white disabled:opacity-50',
+            'rounded bg-white px-2 py-1 text-base text-black shadow transition-colors duration-500 hover:bg-orange hover:text-white disabled:opacity-50',
             'dark:bg-charcoal dark:text-white dark:hover:bg-orange sm:px-3 sm:py-2 sm:text-base'
           )
         )}
@@ -46,13 +49,16 @@ export default function Pagination({
       {pages.map((p) => (
         <button
           key={p}
-          onClick={() => setPage(p)}
+          onClick={() => {
+            setPage(p)
+            window.scrollTo({ top: 0, behavior: 'smooth' })
+          }}
           className={twMerge(
             twJoin(
               'rounded px-2 py-1 text-base shadow sm:px-3 sm:py-2',
               page === p
                 ? 'bg-orange text-white'
-                : 'bg-white text-black hover:bg-orange hover:text-white dark:bg-charcoal dark:text-white dark:hover:bg-orange'
+                : 'bg-white text-black transition-colors duration-500 hover:bg-orange hover:text-white dark:bg-charcoal dark:text-white dark:hover:bg-orange'
             )
           )}
         >
@@ -60,11 +66,14 @@ export default function Pagination({
         </button>
       ))}
       <button
-        onClick={() => setPage(page + 1)}
+        onClick={() => {
+          setPage(page + 1)
+          window.scrollTo({ top: 0, behavior: 'smooth' })
+        }}
         disabled={page === pageCount}
         className={twMerge(
           twJoin(
-            'rounded bg-white px-2 py-1 text-base text-black shadow hover:bg-orange hover:text-white disabled:opacity-50',
+            'rounded bg-white px-2 py-1 text-base text-black shadow transition-colors duration-500 hover:bg-orange hover:text-white disabled:opacity-50',
             'dark:bg-charcoal dark:text-white dark:hover:bg-orange sm:px-3 sm:py-2 sm:text-base'
           )
         )}

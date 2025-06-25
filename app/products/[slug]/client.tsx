@@ -35,10 +35,10 @@ export default function ProductClient() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center gap-8 bg-light px-4 py-8 dark:bg-dark lg:flex-row">
+    <div className="flex min-h-screen flex-col items-center justify-center gap-8 bg-light px-4 py-8 transition-colors duration-500 dark:bg-dark lg:flex-row">
       <div className="container relative flex flex-1 items-center justify-center">
         {!imgLoaded && (
-          <div className="absolute inset-0 z-10 flex items-center justify-center bg-light dark:bg-dark">
+          <div className="absolute inset-0 z-10 flex items-center justify-center bg-light transition-colors duration-500 dark:bg-dark">
             <Spinner text="Loading image..." />
           </div>
         )}
@@ -62,14 +62,14 @@ export default function ProductClient() {
           <h1 className="mb-2 text-3xl font-bold text-orange sm:text-4xl">
             {product.title}
           </h1>
-          <p className="mb-6 text-lg text-gray-700 dark:text-gray-200">
+          <p className="mb-6 text-lg text-gray-700 transition-colors duration-500 dark:text-gray-200">
             {product.description}
           </p>
           <div className="mb-4 flex flex-wrap gap-6 text-lg">
-            <span className="font-semibold text-gray-600 dark:text-gray-300">
+            <span className="font-semibold text-gray-600 transition-colors duration-500 dark:text-gray-300">
               Category: <span className="text-orange">{product.category}</span>
             </span>
-            <span className="font-semibold text-gray-600 dark:text-gray-300">
+            <span className="font-semibold text-gray-600 transition-colors duration-500 dark:text-gray-300">
               Rating:{' '}
               <span className="text-yellow-400">{product.rating} ★</span>
             </span>

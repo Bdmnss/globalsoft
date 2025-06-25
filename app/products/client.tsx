@@ -67,12 +67,12 @@ export default function ProductsClient({
 
   if (isError) {
     return (
-      <div className="flex h-screen flex-col items-center justify-center bg-light dark:bg-dark">
+      <div className="flex h-screen flex-col items-center justify-center bg-light transition-colors duration-500 dark:bg-dark">
         <span className="mb-4 text-7xl font-bold text-red-500">404</span>
         <span className="mb-2 text-2xl font-semibold text-red-500">
           Failed to load products.
         </span>
-        <span className="text-base text-gray-500 dark:text-gray-400">
+        <span className="text-base text-gray-500 transition-colors duration-500 dark:text-gray-400">
           Please try again later or check your connection.
         </span>
       </div>
