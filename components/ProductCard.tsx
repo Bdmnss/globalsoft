@@ -18,7 +18,7 @@ export default function ProductCard({ product }: { product: Product }) {
   const router = useRouter()
   const favorite = isFavorite(product.id)
 
-  const handleFavorite = () => {
+  const handleFavorite = (e: React.MouseEvent) => {
     if (!localStorage.getItem('fake_token')) {
       router.push('/login')
       return
@@ -28,6 +28,7 @@ export default function ProductCard({ product }: { product: Product }) {
     } else {
       addFavorite(product)
     }
+    e.preventDefault()
   }
 
   const handleAddToCart = (e: React.MouseEvent) => {
