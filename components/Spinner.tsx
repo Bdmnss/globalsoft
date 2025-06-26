@@ -1,6 +1,6 @@
 'use client'
 
-import { twMerge, twJoin } from 'tailwind-merge'
+import { twMerge } from 'tailwind-merge'
 
 interface SpinnerProps {
   text?: string
@@ -14,10 +14,8 @@ export default function Spinner({
   return (
     <div
       className={twMerge(
-        twJoin(
-          'flex items-center justify-center bg-light transition-colors duration-500 dark:bg-dark',
-          fullScreen && 'h-screen'
-        )
+        'flex items-center justify-center bg-light transition-colors duration-500 dark:bg-dark',
+        fullScreen && 'h-screen'
       )}
     >
       <span className="flex flex-col items-center gap-6">

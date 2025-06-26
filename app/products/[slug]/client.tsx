@@ -8,7 +8,7 @@ import { useCartStore } from '@/stores/cartStore'
 import { FaHeart, FaShoppingCart, FaRegHeart } from 'react-icons/fa'
 import Spinner from '@/components/Spinner'
 import NotFound from '@/app/not-found'
-import { twMerge, twJoin } from 'tailwind-merge'
+import { twMerge } from 'tailwind-merge'
 import { useState } from 'react'
 
 export default function ProductClient() {
@@ -61,10 +61,9 @@ export default function ProductClient() {
           width={400}
           height={400}
           className={twMerge(
-            twJoin(
-              'size-full max-w-xs rounded object-cover transition-opacity duration-300 sm:max-w-md',
-              imgLoaded ? 'opacity-100' : 'opacity-0'
-            )
+            'size-full max-w-xs rounded object-cover transition-opacity duration-300 sm:max-w-md',
+            imgLoaded && 'opacity-100',
+            !imgLoaded && 'opacity-0'
           )}
           loading="lazy"
           onLoad={() => setImgLoaded(true)}
@@ -95,9 +94,7 @@ export default function ProductClient() {
           <button
             onClick={handleAddToCart}
             className={twMerge(
-              twJoin(
-                'flex items-center justify-center gap-2 rounded bg-orange px-8 py-4 text-lg font-semibold text-white transition hover:bg-orangeLight'
-              )
+              'flex items-center justify-center gap-2 rounded bg-orange px-8 py-4 text-lg font-semibold text-white transition hover:bg-orangeLight'
             )}
             title="Add to Cart"
           >
@@ -107,12 +104,10 @@ export default function ProductClient() {
           <button
             onClick={handleFavorite}
             className={twMerge(
-              twJoin(
-                'flex items-center justify-center gap-2 rounded border border-orange px-8 py-4 text-lg font-semibold transition',
-                favorite
-                  ? 'bg-orange text-white hover:bg-orangeLight'
-                  : 'bg-white text-orange hover:bg-orangeLight hover:text-white'
-              )
+              'flex items-center justify-center gap-2 rounded border border-orange px-8 py-4 text-lg font-semibold transition',
+              favorite && 'bg-orange text-white hover:bg-orangeLight',
+              !favorite &&
+                'bg-white text-orange hover:bg-orangeLight hover:text-white'
             )}
             title={favorite ? 'Remove from Favorites' : 'Add to Favorites'}
           >

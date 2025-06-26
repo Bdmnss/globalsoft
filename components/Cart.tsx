@@ -2,7 +2,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useCartStore } from '@/stores/cartStore'
 import { FaTrash } from 'react-icons/fa'
-import { twJoin, twMerge } from 'tailwind-merge'
+import { twMerge } from 'tailwind-merge'
 import { useEffect, useState, useRef } from 'react'
 
 export default function Cart() {
@@ -47,10 +47,9 @@ export default function Cart() {
     <div
       ref={cartRef}
       className={twMerge(
-        twJoin(
-          'fixed right-[4%] z-10 flex h-[45vh] w-11/12 flex-col gap-6 overflow-y-auto rounded-xl bg-white p-4 dark:bg-black sm:p-8 md:h-96 md:w-2/3 lg:w-1/2 lg:p-12 2xl:w-1/3',
-          isCartOpen ? 'animate-slide-top-to-bottom mt-40' : 'hidden'
-        )
+        'fixed right-[4%] z-10 flex h-[45vh] w-11/12 flex-col gap-6 overflow-y-auto rounded-xl bg-white p-4 dark:bg-black sm:p-8 md:h-96 md:w-2/3 lg:w-1/2 lg:p-12 2xl:w-1/3',
+        isCartOpen && 'mt-40 animate-slide-top-to-bottom',
+        !isCartOpen && 'hidden'
       )}
     >
       <div className="flex items-center justify-between">
@@ -81,10 +80,9 @@ export default function Cart() {
                   src={product.thumbnail}
                   alt={product.title}
                   className={twMerge(
-                    twJoin(
-                      'size-14 rounded object-cover transition-opacity duration-300 sm:size-20 lg:size-24',
-                      imgLoaded[product.id] ? 'opacity-100' : 'opacity-0'
-                    )
+                    'size-14 rounded object-cover transition-opacity duration-300 sm:size-20 lg:size-24',
+                    imgLoaded[product.id] && 'opacity-100',
+                    !imgLoaded[product.id] && 'opacity-0'
                   )}
                   width={64}
                   height={64}
@@ -106,9 +104,7 @@ export default function Cart() {
 
               <div
                 className={twMerge(
-                  twJoin(
-                    'bg-softGrayBg flex items-center justify-between gap-4 rounded-lg px-2 dark:bg-gray-700 sm:px-5 sm:py-2'
-                  )
+                  'flex items-center justify-between gap-4 rounded-lg bg-softGrayBg px-2 dark:bg-gray-700 sm:px-5 sm:py-2'
                 )}
               >
                 <button

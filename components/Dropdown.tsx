@@ -2,7 +2,7 @@
 
 import { useRef, useEffect, ReactNode } from 'react'
 import { FaChevronDown } from 'react-icons/fa'
-import { twMerge, twJoin } from 'tailwind-merge'
+import { twMerge } from 'tailwind-merge'
 
 interface DropdownOption<T> {
   value: T
@@ -96,7 +96,7 @@ export default function Dropdown<T extends string | number>({
         <div
           className={twMerge(
             'absolute left-0 top-full z-10 mt-1 max-h-56 w-full overflow-y-auto rounded border border-orange bg-white shadow dark:bg-charcoal',
-            'animate-dropdown origin-top scale-y-100 opacity-100 transition-all duration-300'
+            'origin-top scale-y-100 animate-dropdown opacity-100 transition-all duration-300'
           )}
           style={{
             animation: 'dropdownOpen 0.18s cubic-bezier(0.4,0,0.2,1)',
@@ -107,11 +107,10 @@ export default function Dropdown<T extends string | number>({
             return (
               <div
                 key={String(opt.value)}
-                className={twJoin(
+                className={twMerge(
                   'flex cursor-pointer items-center gap-2 px-4 py-2 hover:bg-orange hover:text-white',
-                  isSelected
-                    ? 'bg-orange text-white'
-                    : 'text-black dark:text-white',
+                  isSelected && 'bg-orange text-white',
+                  !isSelected && 'text-black dark:text-white',
                   optionClassName
                 )}
                 onClick={() => {

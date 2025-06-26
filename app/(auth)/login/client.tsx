@@ -7,7 +7,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useThemeStore } from '@/stores/themeStore'
 import AuthToggleButtons from '@/components/AuthToggleButtons'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { twMerge, twJoin } from 'tailwind-merge'
+import { twMerge } from 'tailwind-merge'
 import { useAuthStore } from '@/stores/authStore'
 
 const logInSchema = z.object({
@@ -46,10 +46,9 @@ export default function Login() {
   return (
     <div
       className={twMerge(
-        twJoin(
-          'flex size-full min-h-screen justify-center transition-colors duration-500 lg:items-center',
-          theme === 'dark' ? 'bg-dark text-white' : 'bg-white text-black'
-        )
+        'flex size-full min-h-screen justify-center transition-colors duration-500 lg:items-center',
+        theme === 'dark' && 'bg-dark text-white',
+        theme !== 'dark' && 'bg-white text-black'
       )}
     >
       <div className="flex size-full flex-col gap-5 rounded-lg p-8 sm:w-4/5 sm:shadow-lg md:w-3/4 lg:w-1/2 2xl:w-1/3">

@@ -1,6 +1,6 @@
 'use client'
 
-import { twMerge, twJoin } from 'tailwind-merge'
+import { twMerge } from 'tailwind-merge'
 
 interface PaginationProps {
   page: number
@@ -38,10 +38,8 @@ export default function Pagination({
         }}
         disabled={page === 1}
         className={twMerge(
-          twJoin(
-            'rounded bg-white px-2 py-1 text-base text-black shadow transition-colors duration-500 hover:bg-orange hover:text-white disabled:opacity-50',
-            'dark:bg-charcoal dark:text-white dark:hover:bg-orange sm:px-3 sm:py-2 sm:text-base'
-          )
+          'rounded bg-white px-2 py-1 text-base text-black shadow transition-colors duration-500 hover:bg-orange hover:text-white disabled:opacity-50',
+          'dark:bg-charcoal dark:text-white dark:hover:bg-orange sm:px-3 sm:py-2 sm:text-base'
         )}
       >
         &lt;
@@ -54,12 +52,10 @@ export default function Pagination({
             window.scrollTo({ top: 0, behavior: 'smooth' })
           }}
           className={twMerge(
-            twJoin(
-              'rounded px-2 py-1 text-base shadow sm:px-3 sm:py-2',
-              page === p
-                ? 'bg-orange text-white'
-                : 'bg-white text-black transition-colors duration-500 hover:bg-orange hover:text-white dark:bg-charcoal dark:text-white dark:hover:bg-orange'
-            )
+            'rounded px-2 py-1 text-base shadow sm:px-3 sm:py-2',
+            page === p && 'bg-orange text-white',
+            page !== p &&
+              'bg-white text-black transition-colors duration-500 hover:bg-orange hover:text-white dark:bg-charcoal dark:text-white dark:hover:bg-orange'
           )}
         >
           {p}
@@ -72,10 +68,8 @@ export default function Pagination({
         }}
         disabled={page === pageCount}
         className={twMerge(
-          twJoin(
-            'rounded bg-white px-2 py-1 text-base text-black shadow transition-colors duration-500 hover:bg-orange hover:text-white disabled:opacity-50',
-            'dark:bg-charcoal dark:text-white dark:hover:bg-orange sm:px-3 sm:py-2 sm:text-base'
-          )
+          'rounded bg-white px-2 py-1 text-base text-black shadow transition-colors duration-500 hover:bg-orange hover:text-white disabled:opacity-50',
+          'dark:bg-charcoal dark:text-white dark:hover:bg-orange sm:px-3 sm:py-2 sm:text-base'
         )}
       >
         &gt;

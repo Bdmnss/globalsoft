@@ -3,7 +3,6 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { twMerge } from 'tailwind-merge'
-import { twJoin } from 'tailwind-merge'
 
 export default function AuthToggleButtons() {
   const pathname = usePathname()
@@ -16,10 +15,9 @@ export default function AuthToggleButtons() {
       <Link
         href="/login"
         className={twMerge(
-          twJoin(
-            'w-1/2 rounded-l p-3 text-2xl',
-            isLoginPath ? 'bg-orange text-white' : 'bg-gray-200 text-black'
-          )
+          'w-1/2 rounded-l p-3 text-2xl',
+          isLoginPath && 'bg-orange text-white',
+          !isLoginPath && 'bg-gray-200 text-black'
         )}
       >
         Login
@@ -27,10 +25,9 @@ export default function AuthToggleButtons() {
       <Link
         href="/register"
         className={twMerge(
-          twJoin(
-            'w-1/2 rounded-r p-3 text-2xl',
-            isRegisterPath ? 'bg-orange text-white' : 'bg-gray-200 text-black'
-          )
+          'w-1/2 rounded-r p-3 text-2xl',
+          isRegisterPath && 'bg-orange text-white',
+          !isRegisterPath && 'bg-gray-200 text-black'
         )}
       >
         Register

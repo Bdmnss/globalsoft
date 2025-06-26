@@ -1,4 +1,5 @@
-import React, { useRef, useEffect } from 'react'
+import React, { useRef, useEffect, useState } from 'react'
+import { createPortal } from 'react-dom'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useCartStore } from '@/stores/cartStore'
@@ -8,6 +9,11 @@ const PaymentConfirmation: React.FC = () => {
   const { cartItems, totalPrice, clearCart, setIsPaid } = useCartStore()
   const modalRef = useRef<HTMLDivElement>(null)
   const router = useRouter()
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -26,12 +32,25 @@ const PaymentConfirmation: React.FC = () => {
     }
   }, [setIsPaid, clearCart, router])
 
-  return (
+  if (!mounted) return null
+
+  return createPortal(
     <div className="fixed top-0 z-10 h-full w-full bg-white/50 dark:bg-black/50">
       <div
         ref={modalRef}
-        className="fixed left-1/2 top-48 z-10 h-[73vh] w-11/12 -translate-x-1/2 transform overflow-y-auto rounded-xl bg-white p-6 dark:bg-[#101010] md:h-[61vh] md:w-3/4 lg:w-2/5"
+        className="fixed left-1/2 top-48 z-10 min-h-[73vh] w-11/12 -translate-x-1/2 transform overflow-y-auto rounded-xl bg-white p-6 dark:bg-[#101010] md:min-h-[57vh] md:w-3/4 lg:w-2/5"
       >
+        <button
+          aria-label="Close"
+          className="absolute right-4 top-4 z-20 text-4xl text-gray-400 transition-colors hover:text-orange"
+          onClick={() => {
+            setIsPaid(false)
+            clearCart()
+            router.push('/')
+          }}
+        >
+          &times;
+        </button>
         <svg
           width="64"
           height="64"
@@ -103,7 +122,8 @@ const PaymentConfirmation: React.FC = () => {
           </button>
         </Link>
       </div>
-    </div>
+    </div>,
+    document.body
   )
 }
 

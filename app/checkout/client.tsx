@@ -19,6 +19,17 @@ export default function Checkout() {
     }
   }, [router])
 
+  useEffect(() => {
+    if (isPaid) {
+      document.body.classList.add('overflow-hidden')
+    } else {
+      document.body.classList.remove('overflow-hidden')
+    }
+    return () => {
+      document.body.classList.remove('overflow-hidden')
+    }
+  }, [isPaid])
+
   if (!checked) return null
 
   return (

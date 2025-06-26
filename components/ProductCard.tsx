@@ -4,7 +4,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useState } from 'react'
 import { FaHeart, FaShoppingCart, FaRegHeart } from 'react-icons/fa'
-import { twMerge, twJoin } from 'tailwind-merge'
+import { twMerge } from 'tailwind-merge'
 import { useRouter } from 'next/navigation'
 
 import { Product } from '@/types/types'
@@ -12,7 +12,6 @@ import { useFavoritesStore } from '@/stores/favoritesStore'
 import { useCartStore } from '@/stores/cartStore'
 
 export default function ProductCard({ product }: { product: Product }) {
-  const [hovered, setHovered] = useState(false)
   const [imgLoaded, setImgLoaded] = useState(false)
   const { addFavorite, removeFavorite, isFavorite } = useFavoritesStore()
   const { addToCart, setCartOpen } = useCartStore()
@@ -41,11 +40,7 @@ export default function ProductCard({ product }: { product: Product }) {
 
   return (
     <Link href={`/products/${slug}`} className="block h-full" prefetch={false}>
-      <div
-        className="relative flex h-full transform cursor-pointer flex-col rounded-lg bg-white p-4 shadow-md transition-all duration-300 hover:scale-105 dark:bg-charcoal"
-        onMouseEnter={() => setHovered(true)}
-        onMouseLeave={() => setHovered(false)}
-      >
+      <div className="group relative flex h-full transform cursor-pointer flex-col rounded-lg bg-white p-4 shadow-md transition-all duration-300 hover:scale-105 dark:bg-charcoal">
         <div className="absolute left-4 top-4 z-10 flex flex-col gap-2 lg:hidden">
           <button
             onClick={handleAddToCart}
@@ -57,12 +52,10 @@ export default function ProductCard({ product }: { product: Product }) {
           <button
             onClick={handleFavorite}
             className={twMerge(
-              twJoin(
-                'flex items-center gap-2 rounded px-3 py-2 shadow transition',
-                favorite
-                  ? 'bg-orange text-white hover:bg-orangeLight'
-                  : 'bg-white text-orange hover:bg-orangeLight hover:text-white'
-              )
+              'flex items-center gap-2 rounded px-3 py-2 shadow transition',
+              favorite && 'bg-orange text-white hover:bg-orangeLight',
+              !favorite &&
+                'bg-white text-orange hover:bg-orangeLight hover:text-white'
             )}
             title={favorite ? 'Remove from Favorites' : 'Add to Favorites'}
           >
@@ -81,10 +74,9 @@ export default function ProductCard({ product }: { product: Product }) {
             src={product.thumbnail}
             alt={product.title}
             className={twMerge(
-              twJoin(
-                'size-40 self-center rounded object-cover transition-opacity duration-300',
-                imgLoaded ? 'opacity-100' : 'opacity-0'
-              )
+              'size-40 self-center rounded object-cover transition-opacity duration-300',
+              imgLoaded && 'opacity-100',
+              !imgLoaded && 'opacity-0'
             )}
             loading="lazy"
             onLoad={() => setImgLoaded(true)}
@@ -106,33 +98,29 @@ export default function ProductCard({ product }: { product: Product }) {
             </span>
           </div>
         </div>
-        {hovered && (
-          <div className="absolute left-0 top-0 hidden h-full w-full flex-col items-center justify-center gap-4 rounded-lg bg-black/40 transition-opacity lg:flex">
-            <button
-              className="flex items-center gap-2 rounded bg-orange px-4 py-2 text-white shadow transition hover:bg-orangeLight"
-              title="Add to Cart"
-              onClick={handleAddToCart}
-            >
-              <FaShoppingCart />
-              Add to Cart
-            </button>
-            <button
-              onClick={handleFavorite}
-              className={twMerge(
-                twJoin(
-                  'flex items-center gap-2 rounded px-4 py-2 shadow transition',
-                  favorite
-                    ? 'bg-orange text-white hover:bg-orangeLight'
-                    : 'bg-white text-orange hover:bg-orangeLight hover:text-white'
-                )
-              )}
-              title={favorite ? 'Remove from Favorites' : 'Add to Favorites'}
-            >
-              {favorite ? <FaHeart /> : <FaRegHeart />}
-              {favorite ? 'Remove Favorite' : 'Favorite'}
-            </button>
-          </div>
-        )}
+        <div className="absolute left-0 top-0 hidden h-full w-full flex-col items-center justify-center gap-4 rounded-lg bg-black/40 opacity-0 transition-opacity group-hover:opacity-100 lg:flex">
+          <button
+            className="flex items-center gap-2 rounded bg-orange px-4 py-2 text-white shadow transition hover:bg-orangeLight"
+            title="Add to Cart"
+            onClick={handleAddToCart}
+          >
+            <FaShoppingCart />
+            Add to Cart
+          </button>
+          <button
+            onClick={handleFavorite}
+            className={twMerge(
+              'flex items-center gap-2 rounded px-4 py-2 shadow transition',
+              favorite && 'bg-orange text-white hover:bg-orangeLight',
+              !favorite &&
+                'bg-white text-orange hover:bg-orangeLight hover:text-white'
+            )}
+            title={favorite ? 'Remove from Favorites' : 'Add to Favorites'}
+          >
+            {favorite ? <FaHeart /> : <FaRegHeart />}
+            {favorite ? 'Remove Favorite' : 'Favorite'}
+          </button>
+        </div>
       </div>
     </Link>
   )

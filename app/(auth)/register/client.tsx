@@ -6,7 +6,7 @@ import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useThemeStore } from '@/stores/themeStore'
 import AuthToggleButtons from '@/components/AuthToggleButtons'
-import { twJoin, twMerge } from 'tailwind-merge'
+import { twMerge } from 'tailwind-merge'
 import { useRouter } from 'next/navigation'
 
 const signUpSchema = z
@@ -48,10 +48,9 @@ export default function Register() {
   return (
     <div
       className={twMerge(
-        twJoin(
-          'flex size-full min-h-screen justify-center transition-colors duration-500 lg:items-center',
-          theme === 'dark' ? 'bg-dark text-white' : 'bg-white text-black'
-        )
+        'flex size-full min-h-screen justify-center transition-colors duration-500 lg:items-center',
+        theme === 'dark' && 'bg-dark text-white',
+        theme !== 'dark' && 'bg-white text-black'
       )}
     >
       <div className="flex size-full flex-col gap-5 rounded-lg p-8 sm:w-4/5 sm:shadow-lg md:w-3/4 lg:w-1/2 2xl:w-1/3">
@@ -106,7 +105,7 @@ export default function Register() {
           </div>
           <button
             type="submit"
-            className="hover:bg-orangeLight bg-orange mt-4 w-full rounded p-3 text-2xl text-white"
+            className="mt-4 w-full rounded bg-orange p-3 text-2xl text-white hover:bg-orangeLight"
           >
             Register
           </button>
