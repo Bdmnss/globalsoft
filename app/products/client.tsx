@@ -22,6 +22,8 @@ export default function ProductsClient({
   const searchParams = useSearchParams()
   const initialCategory = searchParams.get('category') || 'All'
   const initialSearch = searchParams.get('search') || ''
+  const initialSortOrder =
+    (searchParams.get('sort') as 'asc' | 'desc' | 'default') || 'default'
 
   const [selectedCategory, setSelectedCategory] =
     useState<string>(initialCategory)
@@ -29,7 +31,7 @@ export default function ProductsClient({
   const [search, setSearch] = useState(initialSearch)
   const debouncedSearch = useDebounce(search, 400)
   const [sortOrder, setSortOrder] = useState<'default' | 'asc' | 'desc'>(
-    'default'
+    initialSortOrder
   )
   const [sortOpen, setSortOpen] = useState(false)
   const [page, setPage] = useState(1)
@@ -50,9 +52,10 @@ export default function ProductsClient({
     if (selectedCategory && selectedCategory !== 'All')
       params.set('category', selectedCategory)
     if (debouncedSearch) params.set('search', debouncedSearch)
+    if (sortOrder !== 'default') params.set('sort', sortOrder)
     router.replace(`/products?${params.toString()}`, { scroll: false })
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedCategory, debouncedSearch])
+  }, [selectedCategory, debouncedSearch, sortOrder])
 
   useEffect(() => {
     setPage(1)
