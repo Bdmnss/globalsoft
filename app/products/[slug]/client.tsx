@@ -1,7 +1,7 @@
 'use client'
 
 import { useProduct } from '@/app/api/useProducts'
-import { useParams } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 import Image from 'next/image'
 import { useFavoritesStore } from '@/stores/favoritesStore'
 import { useCartStore } from '@/stores/cartStore'
@@ -12,6 +12,7 @@ import { twMerge, twJoin } from 'tailwind-merge'
 import { useState } from 'react'
 
 export default function ProductClient() {
+  const router = useRouter()
   const params = useParams()
   const slug = params?.slug as string
   const id = slug?.split('-').pop() || ''
@@ -21,17 +22,29 @@ export default function ProductClient() {
   const favorite = product ? isFavorite(product.id) : false
   const [imgLoaded, setImgLoaded] = useState(false)
 
+  const handleAddToCart = () => {
+    addToCart(product)
+    setCartOpen(true)
+  }
+
+  const handleFavorite = () => {
+    if (!localStorage.getItem('fake_token')) {
+      router.push('/login')
+      return
+    }
+    if (favorite) {
+      removeFavorite(product.id)
+    } else {
+      addFavorite(product)
+    }
+  }
+
   if (isLoading) {
     return <Spinner text="Loading product details..." fullScreen />
   }
 
   if (isError || !product) {
     return <NotFound />
-  }
-
-  const handleAddToCart = () => {
-    addToCart(product)
-    setCartOpen(true)
   }
 
   return (
@@ -92,9 +105,7 @@ export default function ProductClient() {
             Add to Cart
           </button>
           <button
-            onClick={() =>
-              favorite ? removeFavorite(product.id) : addFavorite(product)
-            }
+            onClick={handleFavorite}
             className={twMerge(
               twJoin(
                 'flex items-center justify-center gap-2 rounded border border-orange px-8 py-4 text-lg font-semibold transition',

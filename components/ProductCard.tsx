@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { useState } from 'react'
 import { FaHeart, FaShoppingCart, FaRegHeart } from 'react-icons/fa'
 import { twMerge, twJoin } from 'tailwind-merge'
+import { useRouter } from 'next/navigation'
 
 import { Product } from '@/types/types'
 import { useFavoritesStore } from '@/stores/favoritesStore'
@@ -15,10 +16,14 @@ export default function ProductCard({ product }: { product: Product }) {
   const [imgLoaded, setImgLoaded] = useState(false)
   const { addFavorite, removeFavorite, isFavorite } = useFavoritesStore()
   const { addToCart, setCartOpen } = useCartStore()
+  const router = useRouter()
   const favorite = isFavorite(product.id)
 
-  const handleFavorite = (e: React.MouseEvent) => {
-    e.preventDefault()
+  const handleFavorite = () => {
+    if (!localStorage.getItem('fake_token')) {
+      router.push('/login')
+      return
+    }
     if (favorite) {
       removeFavorite(product.id)
     } else {
