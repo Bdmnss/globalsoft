@@ -1,14 +1,7 @@
 import ProductsClient from '../../client'
 import { getCategories } from '@/app/api/products'
 
-interface CategoryPageProps {
-  params: {
-    category?: string
-    [key: string]: unknown
-  }
-}
-
-export default async function CategoryPage({ params }: CategoryPageProps) {
+export default async function CategoryPage({ params }) {
   const categories = await getCategories()
   return (
     <ProductsClient

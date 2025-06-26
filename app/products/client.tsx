@@ -59,6 +59,13 @@ export default function ProductsClient({
     setPage(1)
   }, [selectedCategory, debouncedSearch, sortOrder])
 
+  useEffect(() => {
+    if (debouncedSearch) {
+      if (selectedCategory !== 'All') setSelectedCategory('All')
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debouncedSearch])
+
   if (isError) {
     return (
       <div className="flex h-screen flex-col items-center justify-center bg-light transition-colors duration-500 dark:bg-dark">

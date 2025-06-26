@@ -30,11 +30,18 @@ export const getProductsByCategory = async (
   return res.data
 }
 
-export const searchProducts = async (query: string, page = 1, limit = 9) => {
+export const searchProducts = async (
+  query: string,
+  page = 1,
+  limit = 9,
+  sortOrder: 'default' | 'asc' | 'desc' = 'default'
+) => {
   const skip = (page - 1) * limit
-  const res = await axiosInstance.get(
-    `/search?q=${encodeURIComponent(query)}&limit=${limit}&skip=${skip}`
-  )
+  let url = `/search?q=${encodeURIComponent(query)}&limit=${limit}&skip=${skip}`
+  if (sortOrder === 'asc' || sortOrder === 'desc') {
+    url += `&sortBy=price&order=${sortOrder}`
+  }
+  const res = await axiosInstance.get(url)
   return res.data
 }
 
