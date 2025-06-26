@@ -14,16 +14,16 @@ export const fetchProducts = async (
   limit = 9,
   sortOrder: 'default' | 'asc' | 'desc' = 'default'
 ) => {
+  if (category && category !== 'All') {
+    return await getProductsByCategory(category, page, limit, sortOrder)
+  }
   if (sortOrder === 'asc' || sortOrder === 'desc') {
     return await getSortedProducts(sortOrder, page, limit)
   }
   if (search && search.trim() !== '') {
     return await searchProducts(search, page, limit)
-  } else if (category && category !== 'All') {
-    return await getProductsByCategory(category, page, limit)
-  } else {
-    return await getAllProducts(page, limit)
   }
+  return await getAllProducts(page, limit)
 }
 
 export function useProduct(id: string) {

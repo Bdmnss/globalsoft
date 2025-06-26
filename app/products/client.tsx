@@ -1,37 +1,32 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { useQuery } from '@tanstack/react-query'
+import { fetchProducts } from '@/app/api/useProducts'
 import CategoryDropdown from '@/components/CategoryDropdown'
 import SearchInput from '@/components/SearchInput'
 import ProductsGrid from '@/components/ProductsGrid'
 import Pagination from '@/components/Pagination'
 import SortDropdown from '@/components/SortDropdown'
-import { Category } from '@/types/types'
-import { fetchProducts } from '../api/useProducts'
 import Spinner from '@/components/Spinner'
 import { useDebounce } from '@/hooks/useDebounce'
+import { Category } from '@/types/types'
 
 export default function ProductsClient({
   categories,
+  initialCategory = 'All',
 }: {
   categories: Category[]
+  initialCategory?: string
 }) {
   const router = useRouter()
-  const searchParams = useSearchParams()
-  const initialCategory = searchParams.get('category') || 'All'
-  const initialSearch = searchParams.get('search') || ''
-  const initialSortOrder =
-    (searchParams.get('sort') as 'asc' | 'desc' | 'default') || 'default'
-
-  const [selectedCategory, setSelectedCategory] =
-    useState<string>(initialCategory)
+  const [selectedCategory, setSelectedCategory] = useState(initialCategory)
   const [categoryOpen, setCategoryOpen] = useState(false)
-  const [search, setSearch] = useState(initialSearch)
+  const [search, setSearch] = useState('')
   const debouncedSearch = useDebounce(search, 400)
   const [sortOrder, setSortOrder] = useState<'default' | 'asc' | 'desc'>(
-    initialSortOrder
+    'default'
   )
   const [sortOpen, setSortOpen] = useState(false)
   const [page, setPage] = useState(1)
@@ -48,12 +43,15 @@ export default function ProductsClient({
   const pageCount = Math.ceil(total / limit)
 
   useEffect(() => {
+    let url = '/products'
     const params = new URLSearchParams()
-    if (selectedCategory && selectedCategory !== 'All')
-      params.set('category', selectedCategory)
+    if (selectedCategory && selectedCategory !== 'All') {
+      url = `/products/categories/${selectedCategory}`
+    }
     if (debouncedSearch) params.set('search', debouncedSearch)
     if (sortOrder !== 'default') params.set('sort', sortOrder)
-    router.replace(`/products?${params.toString()}`, { scroll: false })
+    if (params.toString()) url += `?${params.toString()}`
+    router.replace(url, { scroll: false })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedCategory, debouncedSearch, sortOrder])
 

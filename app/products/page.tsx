@@ -1,12 +1,7 @@
 import ProductsClient from './client'
-import { getCategories } from '../api/products'
-
-export const metadata = {
-  title: 'Products',
-}
+import { getCategories } from '@/app/api/products'
 
 export default async function ProductsPage() {
   const categories = await getCategories()
-
-  return <ProductsClient categories={categories} />
+  return <ProductsClient categories={categories} initialCategory="All" />
 }
