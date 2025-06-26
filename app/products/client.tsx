@@ -12,6 +12,7 @@ import SortDropdown from '@/components/SortDropdown'
 import Spinner from '@/components/Spinner'
 import { useDebounce } from '@/hooks/useDebounce'
 import { Category } from '@/types/types'
+import Link from 'next/link'
 
 export default function ProductsClient({
   categories,
@@ -66,6 +67,13 @@ export default function ProductsClient({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedSearch])
 
+  // Breadcrumbs current category
+  const currentCategory =
+    selectedCategory && selectedCategory !== 'All'
+      ? categories.find((c) => c.slug === selectedCategory)?.name ||
+        selectedCategory
+      : null
+
   if (isError) {
     return (
       <div className="flex h-screen flex-col items-center justify-center bg-light transition-colors duration-500 dark:bg-dark">
@@ -82,6 +90,27 @@ export default function ProductsClient({
 
   return (
     <div className="flex min-h-screen flex-col items-center bg-light py-20 transition-colors duration-500 dark:bg-dark">
+      {currentCategory && (
+        <div className="container w-full max-w-7xl">
+          <nav className="mb-4 w-full bg-orange px-4 text-sm text-white">
+            <ol className="flex items-center space-x-2">
+              <li>
+                <Link href="/" className="text-white hover:underline">
+                  Home
+                </Link>
+              </li>
+
+              <>
+                <li>
+                  <span className="mx-2">{'>'}</span>
+                </li>
+                <li className="text-white">{currentCategory}</li>
+              </>
+            </ol>
+          </nav>
+        </div>
+      )}
+
       <div className="container mb-8 flex w-full max-w-7xl flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
         <SearchInput search={search} setSearch={setSearch} />
         <CategoryDropdown
